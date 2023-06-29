@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       res.status(200).json(text);
     } catch (error) {
       console.error('Puppeteer error:', error);
-      res.status(500).json({ message: 'Error performing Puppeteer operation' });
+      res.status(500).json({ message: 'Error performing Puppeteer operation hello' });
     }
   }
 

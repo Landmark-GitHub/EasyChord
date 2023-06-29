@@ -9,6 +9,7 @@ const ChordPage = () => {
   const [test, setTest] = useState('');
 
   const [text, setText] = useState([]);
+  const [dochord, setDochord] = useState(false);
 
   let chordC = process.env.CHROD_C
 
@@ -49,30 +50,50 @@ const ChordPage = () => {
   useEffect(() => {
     axiosText();
     axiosImage();
-    // axiosTest();
+    axiosTest();
   }, []);
 
   return (
-    <div>
+    <main>
       {loader ? (
         <div>loading...</div>
       ) : (
         <>
-        <div className='flex'>
-          {image && <img src={image} alt="ProflieArts" />}
-          <div className='p-2'>
-            <label>{text.name}</label><br/>
-            <span>{text.key}</span>
+          <div className='relative flex text-white bg-slate-900 h-2/6 w-full p-2' style={{ position: 'fixed', bottom: 0, width: '100%'}}>
+            {image && <img src={image} alt="ProflieArts" />}
+            {dochord ? (
+              <div className='bg-blue-300 relative w-full z-0 flex flex-col items-center'>
+                <div className='bg-blue-800 flex w-full h-full overflow-x-auto p-1'>
+                  <TableChords
+                    chords={text.chord}
+                  />
+                </div>
+                <button 
+                  className='bg-red-300 p-1 absolute top-0 left-0'
+                  onClick={() => {setDochord(false)}}
+                >
+                  DoCHORD
+                </button>
+              </div>
+            ) : (
+              <div className='p-2'>
+                <label>{text.name}</label><br/>
+                <span>{text.key}</span>
+                <button 
+                  className='bg-red-300 p-2'
+                  onClick={() => {setDochord(true)}}
+                >
+                  DoCHORD
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-        <div className=''>
-          <TableChords
-            chords = {text.chord}
-          />
-        </div>
+          <div className='w-full h-full'>
+            {image && <img src={test} alt="123123456" />}
+          </div>
         </>
       )}
-    </div>
+    </main>
 
   );
 };
