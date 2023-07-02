@@ -10,8 +10,8 @@ export default function Home() {
 
   return (
     <main>
-      Home Pagenpm
-      <button type="button" onClick={() => router.push('/ChordPage')}> Click me </button>
+      Home Pagenpm <br/>
+      <button className='bg-red-700' type="button" onClick={() => router.push('/ChordPage')}> Click me </button>
     </main>
   )
 }
