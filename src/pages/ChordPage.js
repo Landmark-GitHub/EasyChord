@@ -74,7 +74,7 @@ const ChordPage = () => {
                 >
                   Scroll Container
                 </button>
-            {image && <img src={test} alt="/123123456" />}
+            {image && <img className='w-full' src={test} alt="/123123456" />}
             <div className="bg-red-900 h-2/6 w-full p-2 gap-2">
               123<br />
             </div>
