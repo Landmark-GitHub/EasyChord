@@ -23,14 +23,14 @@ const TableChords = ({ chords }) => {
 
   return (
     // <div className="p-1 bg-white rounded-lg flex overflow-x-auto w-full h-full">
-    <div className="bg-green-200 flex w-full h-full">
+    <div className="bg-green-200 flex w-full h-full gap-2">
       {chords.map((item, i) => {
         const formattedItem = item.replace(/[\/#]/g, '_');
         const image = Object.keys(chord_).find((key) => key === item || key === formattedItem);
         return (
           <div
             key={i}
-            className="bg-white rounded-lg m-1 p-1 flex items-center justify-center cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+            className="bg-white rounded-xl p-1 flex items-center justify-center cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
             onClick={() => {
               console.log(formattedItem);
             }}

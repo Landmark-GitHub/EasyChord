@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TableChords from '@/components/TableChords';
+import { PacmanLoader } from 'react-spinners';
 
 const ChordPage = () => {
   const [loader, setLoader] = useState(false);
@@ -56,14 +57,17 @@ const ChordPage = () => {
   return (
     <main>
       {loader ? (
-        <div>loading...</div>
+        <div>loading...<br/>
+        <PacmanLoader color="#36d7b7" />
+        </div>
+
       ) : (
         <>
-          <div className='relative flex text-white bg-slate-900 h-2/6 w-full p-2' style={{ position: 'fixed', bottom: 0, width: '100%'}}>
+          <div className='relative flex text-white bg-slate-900 h-1/5 w-full p-2' style={{ position: 'fixed', bottom: 0, width: '100%'}}>
             {image && <img src={image} alt="ProflieArts" />}
             {dochord ? (
-              <div className='bg-blue-300 relative w-full z-0 flex flex-col items-center'>
-                <div className='bg-blue-800 flex w-full h-full overflow-x-auto p-1'>
+              <div className='relative min-w-247 z-0 flex flex-col items-center'>
+                <div className='flex w-full h-full overflow-x-auto p-1'>
                   <TableChords
                     chords={text.chord}
                   />

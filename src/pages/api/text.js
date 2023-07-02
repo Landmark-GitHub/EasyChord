@@ -19,11 +19,6 @@ export default async function handler(req, res) {
       const elementKey = await page.waitForSelector('#post-132815 > section:nth-child(4) > div.single-key > div.single-key__select > div')
       const textKey = await page.evaluate(elementKey => elementKey.textContent, elementKey);
 
-      //#post-132815 > section:nth-child(2) > div.panel2.table-chord > div > div
-      //#builder_0 > svg > text:nth-child(3) > tspan
-      //#post-132815 > section:nth-child(2) > div.panel2.table-chord > div > div > div > div > div > svg > text:nth-child > tspan
-      //#post-132815 > section:nth-child(2) > div.panel2.table-chord > div
-      //#post-132815 > section:nth-child(2) > div.panel2.table-chord > div > div
       //#post-132815 > section:nth-child(2) > div.archive-desc > p
       const elementChord = await page.waitForSelector('#post-132815 > section:nth-child(2) > div.archive-desc > p')
       const temp = (await page.evaluate(elementChord => elementChord.textContent, elementChord));
