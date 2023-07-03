@@ -87,6 +87,7 @@ const ChordPage = () => {
                   Scroll window
                 </button>
             {image && <img className='w-full' src={test} alt="/123123456" />}
+            <img classname='w-full' src={./screenshot.png} alt="/offline" />
             <div className="bg-red-900 h-2/6 w-full p-2 gap-2">
               123<br />
             </div>
