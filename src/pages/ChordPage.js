@@ -76,7 +76,7 @@ const ChordPage = () => {
                   type="button" 
                   onClick={scrollContainer}
                 >
-                  Scroll Container
+                  Scroll intoview
                 </button>
                 
             <button
@@ -84,7 +84,7 @@ const ChordPage = () => {
                   type="button" 
                   onClick={handleScroll}
                 >
-                  Scroll Container
+                  Scroll window
                 </button>
             {image && <img className='w-full' src={test} alt="/123123456" />}
             <div className="bg-red-900 h-2/6 w-full p-2 gap-2">
