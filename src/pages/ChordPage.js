@@ -12,7 +12,9 @@ const ChordPage = () => {
 
   const [text, setText] = useState([]);
   const [dochord, setDochord] = useState(false);
-  const slideChord = useRef(null);
+
+  const [slideDown, setSlideDown] = useState(false);
+
 
 
   async function axiosText() {
@@ -54,13 +56,16 @@ const ChordPage = () => {
     axiosTest();
   }, []);
 
-  const scrollContainer = () => {
-    slideChord.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  };
-  
-  function handleScroll() {
-    window.scrollTo({ top:document.body.scrollHeiht, behavior: 'smooth', });
-    }
+  const slide = () => {
+    const timeout = setTimeout(() => {
+      setSlideDown(true);
+      setTimeout(() => {
+        setSlideDown(false);
+      }, 500);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }
 
   return (
     <main>
@@ -71,22 +76,15 @@ const ChordPage = () => {
         </div>
       ) : (
         <>
-          <div id="container" className="w-full h-screen" style={{ maxHeight: '100%', overflowY: 'scroll' }} ref={slideChord}>
+          <div id="container" className={`w-full transition-transform ${slideDown ? ' ' : 'translate-y-(100)'}`}>
             <button
               className="bg-red-300 p-1"
               type="button" 
-              onClick={scrollContainer}
+              onClick={() => {setSlideDown(!slideDown)}}
             >
               Scroll intoview
             </button>
-                  
-            <button
-              className="bg-red-800 p-1"
-              type="button" 
-              onClick={handleScroll}
-            >
-              Scroll window
-            </button>
+
             <img className='w-full' src={test} alt="/123123456" />
             <img className="w-full" src={screenshot} alt="/123" />
             <div className="bg-red-900 h-2/6 w-full p-2 gap-2">

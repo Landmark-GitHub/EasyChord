@@ -26,3 +26,8 @@ body {
     )
     rgb(var(--background-start-rgb)); */
 }
+
+.slide-down {
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in-out;
+}
