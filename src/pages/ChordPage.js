@@ -56,6 +56,10 @@ const ChordPage = () => {
   const scrollContainer = () => {
     slideChord.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
   };
+  
+  function handleScroll() {
+    window.scrollTo({ bottom:0 , behavior: 'smooth'});
+    }
 
   return (
     <main>
@@ -71,6 +75,14 @@ const ChordPage = () => {
                   className="bg-red-300 p-1"
                   type="button" 
                   onClick={scrollContainer}
+                >
+                  Scroll Container
+                </button>
+                
+            <button
+                  className="bg-red-800 p-1"
+                  type="button" 
+                  onClick={handleScroll}
                 >
                   Scroll Container
                 </button>
