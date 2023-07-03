@@ -3,6 +3,7 @@ import axios from 'axios';
 import TableChords from '@/components/TableChords';
 import Consoler from '@/components/Consoler';
 import { PacmanLoader } from 'react-spinners';
+import screenshot from './screenshot.png'
 
 const ChordPage = () => {
   const [loader, setLoader] = useState(false);
@@ -56,6 +57,10 @@ const ChordPage = () => {
   const scrollContainer = () => {
     slideChord.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
   };
+  
+  function handleScroll() {
+    window.scrollTo({ top:document.body.scrollHeiht, behavior: 'smooth', });
+    }
 
   return (
     <main>
@@ -67,14 +72,23 @@ const ChordPage = () => {
       ) : (
         <>
           <div id="container" className="w-full h-screen" style={{ maxHeight: '100%', overflowY: 'scroll' }} ref={slideChord}>
-          <button
-                  className="bg-red-300 p-1"
-                  type="button" 
-                  onClick={scrollContainer}
-                >
-                  Scroll Container
-                </button>
-            {image && <img className='w-full' src={test} alt="/123123456" />}
+            <button
+              className="bg-red-300 p-1"
+              type="button" 
+              onClick={scrollContainer}
+            >
+              Scroll intoview
+            </button>
+                  
+            <button
+              className="bg-red-800 p-1"
+              type="button" 
+              onClick={handleScroll}
+            >
+              Scroll window
+            </button>
+            <img className='w-full' src={test} alt="/123123456" />
+            <img className="w-full" src={screenshot} alt="/123" />
             <div className="bg-red-900 h-2/6 w-full p-2 gap-2">
               123<br />
             </div>
