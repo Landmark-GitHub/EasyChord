@@ -58,7 +58,7 @@ const ChordPage = () => {
   };
   
   function handleScroll() {
-    window.scrollTo({ bottom:0 , behavior: 'smooth'});
+    window.scrollTo({ top:document.body.scrollHeiht, behavior: 'smooth', });
     }
 
   return (
