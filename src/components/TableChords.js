@@ -35,8 +35,8 @@ const TableChords = ({ chords }) => {
               console.log(formattedItem);
             }}
           >
-            <div className='w-32 p-1 text-center'>
-              <img src={chord_[image]} alt={`Chord ${item}`} className="w-full h-full" />
+            <div className='w-32 h-full text-center p-1'>
+              <img src={chord_[image]} alt={`Chord ${item}`} className="w-full h-5/6" />
               <p className='text-black'>{item}</p>
             </div>
           </div>

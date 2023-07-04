@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import axios from 'axios';
 import TableChords from '@/components/TableChords';
 import Consoler from '@/components/Consoler';
 import { PacmanLoader } from 'react-spinners';
-import screenshot from './screenshot.png'
+import screenshot from '../pages/screenshot.png';
 
 const ChordPage = () => {
   const [loader, setLoader] = useState(false);
@@ -14,7 +15,6 @@ const ChordPage = () => {
   const [dochord, setDochord] = useState(false);
 
   const [slideDown, setSlideDown] = useState(false);
-
 
 
   async function axiosText() {
@@ -56,16 +56,30 @@ const ChordPage = () => {
     axiosTest();
   }, []);
 
-  const slide = () => {
-    const timeout = setTimeout(() => {
-      setSlideDown(true);
-      setTimeout(() => {
-        setSlideDown(false);
-      }, 500);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }
+  const scrollDown = () => {
+    const scrollDuration = 300000; // Duration in milliseconds (10 seconds)
+  
+    const start = window.pageYOffset;
+    const documentHeight = document.documentElement.scrollHeight;
+    const distance = documentHeight - start;
+    const startTime = performance.now();
+  
+    const easeInOutQuad = (t) => {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    };
+  
+    const scroll = (currentTime) => {
+      const elapsedTime = currentTime - startTime;
+      const scrollPosition = easeInOutQuad(elapsedTime / scrollDuration) * distance + start;
+      window.scrollTo(0, scrollPosition);
+  
+      if (elapsedTime < scrollDuration) {
+        requestAnimationFrame(scroll);
+      }
+    };
+  
+    requestAnimationFrame(scroll);
+  };
 
   return (
     <main>
@@ -75,26 +89,17 @@ const ChordPage = () => {
           <PacmanLoader color="#36d7b7" />
         </div>
       ) : (
-        <>
-          <div id="container" className={`w-full transition-transform ${slideDown ? ' ' : 'translate-y-(100)'}`}>
-            <button
-              className="bg-red-300 p-1"
-              type="button" 
-              onClick={() => {setSlideDown(!slideDown)}}
-            >
-              Scroll intoview
-            </button>
-
-            <img className='w-full' src={test} alt="/123123456" />
-            <img className="w-full" src={screenshot} alt="/123" />
-            <div className="bg-red-900 h-2/6 w-full p-2 gap-2">
-              123<br />
-            </div>
+        <div>
+          <div id="container" className={`w-full`}>
+            <Image className="bg-slate-500 p-2 w-full" src={screenshot} alt="/123" />
+          </div>
+          <div className="bg-red-900 h-3/6 w-full py-11 gap-2">
+            123
           </div>
 
           <div
             id="controller-bar"
-            className="relative flex text-white bg-slate-900 h-2/6 w-full p-2 gap-2"
+            className="relative flex text-white bg-slate-900 h-1/5 w-full p-2 gap-2"
             style={{ position: 'fixed', bottom: 0, width: '100%' }}
           >
             <div className="bg-white w-1/5 flex items-center justify-center">
@@ -122,7 +127,8 @@ const ChordPage = () => {
               </div>
             )}
           </div>
-        </>
+
+        </div>
       )}
     </main>
   );
