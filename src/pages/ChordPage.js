@@ -105,7 +105,7 @@ const ChordPage = () => {
             <div className="bg-white w-1/5 flex items-center justify-center">
               {image && <img className='object-cover w-full h-full' src={image} alt="ProflieArts" />}
             </div>
-            {dochord ? (
+            {dochord  ? (
               <div className="relative w-4/5 h-full overflow-y-auto">
                 <TableChords chords={text.chord} />
                 <button
