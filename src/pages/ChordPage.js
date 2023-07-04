@@ -85,7 +85,7 @@ const ChordPage = () => {
     <main>
       {loader ? (
         <div>
-          loading...<br />
+          loading...JA<br />
           <PacmanLoader color="#36d7b7" />
         </div>
       ) : (
