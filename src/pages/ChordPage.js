@@ -80,6 +80,10 @@ const ChordPage = () => {
   
     requestAnimationFrame(scroll);
   };
+  
+  function handleScroll() {
+    window.scrollTo({ top:document.body.scrollHeiht, behavior: 'smooth', });
+    }
 
   return (
     <main>
@@ -89,12 +93,19 @@ const ChordPage = () => {
           <PacmanLoader color="#36d7b7" />
         </div>
       ) : (
-        <div>
-          <div id="container" className={`w-full`}>
-            <Image className="bg-slate-500 p-2 w-full" src={screenshot} alt="/123" />
-          </div>
-          <div className="bg-red-900 h-3/6 w-full py-11 gap-2">
-            123
+        <>
+          <div id="container" className="w-full h-screen" style={{ maxHeight: '100%', overflowY: 'scroll' }} ref={slideChord}>
+          <button
+                  className="bg-red-300 p-1"
+                  type="button" 
+                  onClick={scrollContainer}
+                >
+                  Scroll Container
+                </button>
+            {image && <img className='w-full' src={test} alt="/123123456" />}
+            <div className="bg-red-900 h-2/6 w-full p-2 gap-2">
+              123<br />
+            </div>
           </div>
 
           <div
