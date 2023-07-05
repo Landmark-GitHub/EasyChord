@@ -1,8 +1,6 @@
 const puppeteer = require('puppeteer');
 
 export default async function handler(req, res) {
-  // res.status(200).json('hello');
-
   if (req.method === 'GET'){
     try {
       const browser = await puppeteer.launch({ headless: true });
