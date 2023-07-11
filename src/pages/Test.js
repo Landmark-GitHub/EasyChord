@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
-import screenshot from '../pages/screenshot.png';
+import screenshot from '../image/screenshot.png';
 import TableChords from '@/components/TableChords';
 
 export default function Test () {

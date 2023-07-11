@@ -47,9 +47,9 @@ export default function Search() {
                 </label>
             </div>
             
-            <div className='p-2 transition duration-500 ease-in-out transform overflow-y-auto'>
+            <div className='p-2 overflow-y-auto'>
                 {load ? <h1>loading...</h1> : (data.length > 0 ? (
-                    <ul className='space-y-4'>
+                    <ul className='space-y-4 transition duration-500 ease-in-out transform scale-100'>
                         {data.map((item, index) => (
                             <li
                                 key={index}
@@ -69,7 +69,7 @@ export default function Search() {
                         ))}
                     </ul>
                 ) : (
-                    <p className='text-gray-500'>ค้นหาเพลงสิไอสัส</p>
+                    <p className='text-gray-500'>ค้นหาเพลงสิ</p>
                 ))}
 
             </div>
