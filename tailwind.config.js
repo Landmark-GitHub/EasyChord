@@ -12,18 +12,22 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colos: {
+        c1:'F2BED1',
+        
+      }
     },
     screens: {
-      'sm': '640px',
+      'phone': '640px',
       // => @media (min-width: 640px) { ... }
 
-      'md': '768px',
+      'taplet': '768px',
       // => @media (min-width: 768px) { ... }
 
-      'lg': '1024px',
+      'laptop': '1024px',
       // => @media (min-width: 1024px) { ... }
 
-      'xl': '1280px',
+      'dektop': '1280px',
       // => @media (min-width: 1280px) { ... }
 
       '2xl': '1536px',

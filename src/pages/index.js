@@ -1,63 +1,42 @@
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import axios from 'axios';
-
-const inter = Inter({ subsets: ['latin'] });
+import Login from '@/components/Login';
+import Search from '@/components/Search';
+import Image from 'next/image';
+import profilePic from '../image/Screenshot_2023-07-08_232129-transformed.png'
 
 export default function Home() {
-  const [keyword, setKeyword] = useState('');
-  const [data, setData] = useState([]);
-
-  async function axiosSearch() {
-    try {
-      const response = await axios.get(`/api/SearchMusic?name=${keyword}`);
-      setData(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   const router = useRouter();
 
   return (
-    <main className='w-screen h-screen flex flex-col justify-between'>
-      
-      <div className='bg-red-300 h-1/6'>123</div>
+    <main className="w-screen h-screen grid grid-cols-[50%_50%] ">
 
-      <div className='bg-slate-900 h-full flex flex-col items-center justify-center p-2'>
-        <div className='bg-white'>
-          <label className='font-bold'>EasyChord</label>
-          <div className='bg-white p-2 rounded-full'>
-            <input
-              type='text'
-              name='name'
-              placeholder='Search...'
-              onChange={(event) => setKeyword(event.target.value)}
-            />
-            <button onClick={axiosSearch}>Search</button>
-          </div>
-          <div className='p-5'>
-            List<br />
-            {data && data.map((item, index) => 
-            <li 
-            key={index} 
-            className=' hover:bg-slate-500 '
-            onClick={() => {console.log(item.url)}}>
-              {item.name}</li>)}
-          </div>
+      <div className=''>
+        <h1 className='z-0 text-5xl m-3'> EasyChord. </h1>
+        <div className='z-20 absolute bottom-0 p-3'>
+          &copy; {new Date().getFullYear()} EasyChord. All rights reserved.
         </div>
+        <Image
+          src={profilePic}
+          alt="Picture of the author"
+          className='z-10 absolute bottom-0'
+          width={760}
+          height={500} 
+          blurDataURL="data:..." automatically provided
+          placeholder="blur" // Optional blur-up while loading
+        />
       </div>
 
+      <footer className="text-sm grid grid-rows-[10%_80%_10%]">
+        <div className=' bg-yellow-400 rounded-l-lg'>
 
-      <div className='bg-red-300 h-1/6'>
-        <button className='bg-red-700 p-3' type='button' onClick={() => router.push('/ChordPage')}>
-          Click me
-        </button>
-      </div>
+          <button> LogIN </button>
+          <button> SignIN </button>
+          <button class="rounded-full ...">Save Changes</button>
 
+        </div>
+        <Search/>
+        <div className=''></div>
+      </footer>
     </main>
   );
 }

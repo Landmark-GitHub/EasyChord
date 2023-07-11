@@ -27,18 +27,3 @@ body {
     rgb(var(--background-start-rgb)); */
 }
 
-.slide-down {
-  transform: translateY(100%);
-  transition: transform 0.5s ease-in-out;
-}
-
-.scroll-view-container {
-  overflow: auto;
-  width: 100%;
-/* กำหนดความสูงของพื้นที่ที่เลื่อนภาพ */
-}
-
-.target {
-  transition: transform 20s ease-in-out; /* การเลื่อนลงที่ช้าลงในเวลา 0.5 วินาที */
-}
-
