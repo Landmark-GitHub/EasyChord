@@ -19,7 +19,7 @@ export default function Home() {
           src={profilePic}
           alt="Picture of the author"
           className='z-10 absolute bottom-0'
-          width={760}
+          width={740}
           height={500} 
           blurDataURL="data:..." automatically provided
           placeholder="blur" // Optional blur-up while loading
@@ -28,10 +28,6 @@ export default function Home() {
 
       <footer className="text-sm grid grid-rows-[10%_80%_10%]">
         <div className=' bg-yellow-400 rounded-l-lg'>
-
-          <button> LogIN </button>
-          <button> SignIN </button>
-          <button class="rounded-full ...">Save Changes</button>
 
         </div>
         <Search/>
