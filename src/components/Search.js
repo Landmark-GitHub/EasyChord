@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import axios from 'axios';
 
-export default function Search() {
+export default function Search({openMuduls, setOpenMuduls, user}) {
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(false);
@@ -58,10 +58,15 @@ export default function Search() {
                                     let url = item.url
                                     let format = url.split('/').filter(Boolean).pop();
                                     console.log(url)
-                                    router.push({
-                                        pathname: '/Test',
-                                        query: { idMusic: format },
-                                    })
+                                    if (user) {
+                                        router.push({
+                                            pathname: '/Test',
+                                            query: { idMusic: format },
+                                        })
+                                    } else {
+                                        setOpenMuduls("Login")
+                                        alert("แอ๊ะๆ Login ก๊อนนน")
+                                    }
                                 }}
                             >
                                 {item.name}
