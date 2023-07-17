@@ -7,8 +7,10 @@ import { useState } from 'react';
 export default function Home() {
 
   const [openMuduls, setOpenMuduls] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [search, setSearch] = useState(false);
 
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
 
   const router = useRouter();
 
@@ -16,39 +18,95 @@ export default function Home() {
     <main className="w-screen h-screen grid grid-cols-[50%_50%] overflow-hidden">
 
       <div className=''>
-        <h1 className='z-0 text-5xl m-3'> EasyChord. </h1>
+        <h1 className='z-0 text-5xl m-3 sx:hidden'> EasyChord. </h1>
         <label className='z-20 absolute bottom-0 p-3 font-bold'>
           &copy; {new Date().getFullYear()} EasyChord. All rights reserved.
         </label>
         <Image
           src={profilePic}
           alt="Picture of the author"
-          className='z-10 absolute bottom-0'
+          className='absolute bottom-0'
           width={740}
           height={500} 
-          blurDataURL="data:..." automatically provided
-          placeholder="blur" // Optional blur-up while loading
+          // blurDataURL="data:..." automatically provided
+          // placeholder="blur" // Optional blur-up while loading
         />
       </div>
 
       <content className="grid grid-rows-[10%_80%_10%]">
-        
         <div className=' bg-yellow-400 rounded-l-lg pr-4'>
           {user ? 
           <div className="w-full h-full grid grid-cols-[60%_40%] gap-2 pr-2">     
             <label/>
-            <div className="flex justify-end items-center gap-2"
+            <div className="flex justify-end items-center gap-2 cursor-pointer"
             onClick={() => {
-              setUser(false)
-              alert('LOCKOUT')
+              setMenu(true)
+              // alert('LOCKOUT')
             }}>
               <label className="font-bold text-lg ">username</label>
               <div className="bg-slate-100 rounded-full w-12 h-12">img</div>
             </div>
-          </div>
+
+            {menu && (
+              <>
+            <div className="fixed inset-0 z-10 transition-opacity">
+              <div
+                className="absolute inset-0 z-10 bg-black opacity-75"
+                onClick={
+                  () => {
+                    setMenu(false)
+                    setSearch(false)
+                  }
+                }
+              ></div>
+            </div>  
+            <div className={`absolute ${search ? 'h-3/4' : ''} w-1/4 z-20 p-0 top-6 right-0 mt-12 mr-2 bg-white rounded-md shadow-lg`}>
+              <ul className={`py-2 ${search ? 'h-full':''}`}>
+                <li
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleMenuItemClick('profile')}
+                >
+                  Profile
+                </li>
+                <li
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  onClick={() => setSearch(!search)}
+                >
+                  Search
+                </li>
+             
+                {search && 
+                <li
+                  className="h-4/6 my-2"
+                >
+                  <Search
+                    user={user}
+                  />
+                </li>
+                }
+         
+
+                <li
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleMenuItemClick('turner')}
+                >
+                  Turner
+                </li>
+                <li
+                  className="px-4 py-2 cursor-pointer hover:bg-red-300"
+                  onClick={() => setUser(false)}
+                >
+                  Lockout
+                </li>
+              </ul>
+            </div>
+            </>
+          )}  
+
+          </div>        
           :
           <div className="w-full h-full grid grid-cols-[60%_20%_20%] gap-2 p-4 pr-2">
-            <label/>
+            <label className='text-yellow-400 text-4xl font-bold cursor-pointer transition duration-500 ease-in transform hover:scale-105 hover:text-white'> EasyChord </label>
             <button class="cursor-pointer transition duration-500 ease-in-out transform hover:scale-105 hover:text-white hover:border-white border-4 border-yellow-400 font-bold rounded-full"
             onClick={() => setOpenMuduls('Login')}
             // onClick={() => setUser(true)}
@@ -86,7 +144,7 @@ export default function Home() {
                 <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0">
                   <div href="/">
                     <h3 className="text-4xl font-bold text-yellow-600">
-                      Logo
+                      EasyChord
                     </h3>
                   </div>
                   <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
@@ -132,6 +190,7 @@ export default function Home() {
                         onClick={() => {
                           setUser(true)
                           setOpenMuduls(false)
+                          setMenu(false)
                         }}
                         >
                           Login
@@ -198,13 +257,13 @@ export default function Home() {
                 onClick={() => setOpenMuduls(false)}
               ></div>
             </div>
-            <form className="bg-yellow-400 rounded-lg h-screen shadow-xl transform transition-all sm:w-3/4 md:w-2/3 lg:w-1/2 p-4" onClick={(e) => e.stopPropagation()}>
+            <form className="bg-yellow-400 rounded-lg shadow-xl transform transition-all sm:w-3/4 md:w-2/3 lg:w-1/2 p-4" onClick={(e) => e.stopPropagation()}>
 
               <div>
                 <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0">
                   <div href="/">
                     <h3 className="text-4xl font-bold text-yellow-600">
-                      Logo
+                      EasyChord
                     </h3>
                   </div>
                   <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
@@ -333,52 +392,5 @@ export default function Home() {
       )}
 
     </main>
-  
   );
 }
-
-
-
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 400,
-//   bgcolor: 'background.paper',
-//   border: '2px solid #000',
-//   boxShadow: 24,
-//   p: 4,
-// };
-
-// if (openMuduls && openMuduls === 'login') {
-//   return(
-//     <div className="bg-black bg-opacity-40 min-h-screen flex items-center justify-center">
-//       <Modal
-//         aria-labelledby="spring-modal-title"
-//         aria-describedby="spring-modal-description"
-//         open={openMuduls}
-//         onClose={() => setOpenMuduls(false)}
-//         closeAfterTransition
-//         // slots={{ backdrop: Backdrop }}
-//         slotProps={{
-//           backdrop: {
-//             TransitionComponent: Fade,
-//           },
-//         }}
-//       >
-//         {/* <Fade in={open}> */}
-//           <Box sx={style}>
-//             <Typography id="spring-modal-title" variant="h6" component="h2">
-//               Text in a modal
-//             </Typography>
-//             <Typography id="spring-modal-description" sx={{ mt: 2 }}>
-//               Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-//             </Typography>
-//           </Box>
-//         {/* </Fade> */}
-//       </Modal>
-//     </div>
-//   )
-// }
-

@@ -19,6 +19,7 @@
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
     "next": "13.4.7",
+    "performance-now": "^2.1.0",
     "postcss": "8.4.24",
     "puppeteer": "^20.7.3",
     "puppeteer-core": "^20.7.3",

@@ -18,12 +18,18 @@
 
 body {
   background-color: white;
-  /* color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
+}
+
+span {
+  color: #00f;
+  position: relative;
+  font-weight: 700;
+  display: inline-block;
+  left: 0;
+  width: 25px;
+  top: -20px;
+  margin-left: -25px;
+  text-align: right;
+  word-wrap: normal;
 }
 
