@@ -1,0 +1,62 @@
+{
+    "format": "layers-model",
+    "generatedBy": "TensorFlow.js v2.4.0",
+    "convertedBy": "tfjs-converter v2.4.0",
+    "modelTopology": {
+      "class_name": "Sequential",
+      "keras_version": "2.4.0",
+      "config": {
+        "name": "sequential",
+        "layers": [
+          {
+            "class_name": "InputLayer",
+            "config": {
+              "batch_input_shape": [
+                null,
+                1024
+              ],
+              "dtype": "float32",
+              "sparse": false,
+              "ragged": false,
+              "name": "dense_input"
+            }
+          },
+          {
+            "class_name": "Reshape",
+            "config": {
+              "name": "reshape",
+              "trainable": false,
+              "dtype": "float32",
+              "target_shape": [
+                1024,
+                1
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "weightsManifest": [
+      {
+        "paths": [
+          "model.weights.bin"
+        ],
+        "weights": [
+          {
+            "name": "conv1/kernel",
+            "shape": [
+              512,
+              1,
+              512
+            ],
+            "dtype": "float32"
+          }
+        ]
+      }
+    ],
+    "userDefinedMetadata": {
+      "version": "2.0",
+      "type": "audio"
+    }
+  }
+  

@@ -1,161 +1,107 @@
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import screenshot from '../image/screenshot.png';
-import TableChords from '@/components/TableChords';
+import React, { useState, useEffect } from 'react';
+import NotePitch from '../libs/NotePitch';
 
-export default function Test() {
-  const [loader, setLoader] = useState(false);
-  const [text, setText] = useState({});
-  const [dochord, setDochord] = useState(false);
+const Test = () => {
+  const [record, setRecord] = useState(false);
+  const [frequency, setFrequency] = useState(0);
+  const [pitch, setPitch] = useState('');
 
-  const [count, setCount] = useState(0);
+  const [audioContext, setAudioContext] = useState(null);
+  const [analyser, setAnalyser] = useState(null);
+  const [mediaStream, setMediaStream] = useState(null);
 
-  const router = useRouter();
-  const { id } = router.query;
+  const startRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then((stream) => {
 
-  async function axiosText() {
-    // setLoader(true);
-    try {
-      const response = await axios.get(`http://localhost:3000/api/text?id=${id}`);
-      setText(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoader(false);
+        const newAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const newAnalyser = newAudioContext.createAnalyser();
+
+        setAudioContext(newAudioContext);
+        setAnalyser(newAnalyser);
+        setMediaStream(stream);
+
+        const source = newAudioContext.createMediaStreamSource(stream);
+        source.connect(newAnalyser);
+        newAnalyser.connect(newAudioContext.destination);
+        
+        const updatePitch = () => {
+
+          const bufferLength = newAnalyser.frequencyBinCount;
+          const dataArray = new Uint8Array(bufferLength);
+          newAnalyser.getByteFrequencyData(dataArray);
+
+          // ในกรณีนี้ความถี่ที่สนใจจะอยู่ในช่วงความถี่ระหว่าง 100Hz ถึง 1000Hz
+          const startFrequency = 70;
+          const endFrequency = 1000;
+
+          // คำนวณความถี่เฉลี่ยของสัญญาณเสียงในช่วงที่สนใจ
+          const startIndex = Math.floor(startFrequency / (newAudioContext.sampleRate / bufferLength));
+          const endIndex = Math.floor(endFrequency / (newAudioContext.sampleRate / bufferLength));
+          const frequencyData = dataArray.slice(startIndex, endIndex);
+          const averageFrequency = frequencyData.reduce((acc, value) => acc + value, 0) / frequencyData.length;
+
+          // ใช้ข้อมูลความถี่เฉลี่ยในการคำนวณค่า Pitch
+          // const pitchValue = NotePitch.getPitchFromFrequency(averageFrequency, { concertPitch: 440 });
+
+          setFrequency(averageFrequency.toFixed(2));
+          // setPitch(pitchValue);
+
+          console.log(averageFrequency.toFixed(2))
+          setTimeout(updatePitch, 1200);
+        };
+
+        updatePitch();
+        
+      })
+      .catch((error) => {
+        console.error('ไม่สามารถเข้าถึงไมค์: ', error);
+      });
+  };
+
+  const stopRecording = () => {
+    if (audioContext && audioContext.state !== 'closed') {
+      mediaStream.getTracks().forEach(track => track.stop());
+      audioContext.close().then(() => {
+        setRecord(false);
+        setFrequency(0);
+        setAudioContext(null);
+        setAnalyser(null);
+        setMediaStream(null);
+      });
     }
-  }
+  };
 
-  async function changKey(keyword) {
-    if (keyword === 'Addkey') {
-        setCount(count + 1)
-        console.log(count);
-        try {
-            console.log('Addkey successfully added OKK ADDKEY +')
-            const response = await axios.get(`http://localhost:3000/api/text?id=${id}&key=${keyword}&count=${count}`);
-            setText(response.data);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            console.log('ok')
-        }
-    } else {
-        setCount(count - 1);
-        console.log(count);
-        try {
-            console.log('Addkey successfully added OKK ADDKEY +')
-            const response = await axios.get(`http://localhost:3000/api/text?id=${id}&key=${keyword}&count=${count}`);
-            setText(response.data);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            console.log('ok')
-        }
-    }
-  }
-
-  function parseChordsInText(musicText) {
-    const chordRegex = /([A-Ga-g][#|b]?m?)/g;
-    const chords = musicText.match(chordRegex);
-    const parts = musicText.split(chordRegex);
-
-    return parts.map((part, index) => {
-      if (chords && chords[index]) {
-        return (
-          <p key={index}>
-            {part}
-            <span id="c_chord">{chords[index]}</span>
-          </p>
-        );
-      } else {
-        return <p key={index}>{part}</p>;
-      }
-    });
-  }
 
   useEffect(() => {
-    axiosText();
-    setCount(0);
-  }, [id]);
+    if (record) {
+      startRecording();
+      console.log('UPdate PP')
+      // console.log(frequencies1);
+    } else {
+      stopRecording();
+    }
+
+    return () => {
+      stopRecording(); // ยกเลิกการรับค่าเสียงเมื่อคอมโพนีนถูกปิด
+    }
+  }, [record]);
 
   return (
-    <main className='w-screen h-screen flex flex-col justify-between bg-white overflow-hidden'>
-      {text ? (
-        loader ? (
-          <>
-            <p>loading...Jaa</p>
-            <p>ID : {id}</p>
-          </>
-        ) : (
-          <>
-            <header className='bg-gray-300 h-1/6 py-3'>
-              <button onClick={() => router.push('/')} className='absolute top-5 left-5 bg-black text-red-50'>
-                Back
-              </button>
-              <div className='hover:h-full grid grid-cols-[20%_60%_20%]'>
-                <label />
-
-                <div className='bg-black opacity-75 hover:opacity-90 grid grid-cols-[20%_60%_20%] gap-1 p-1 text-white rounded-full'>
-                  <label className='bg-green-500 rounded-l-full'>{id}</label>
-
-                  <div className='grid grid-rows-[50%_50%]'>
-                    {/* Use optional chaining */}
-                    <div className='bg-red-300'>{text.name}</div>
-                    <div className='bg-blue-300'>{text.capo}</div>
-                  </div>
-
-                  <div className='bg-green-500 rounded-r-full mr-2 flex justify-between'>
-                    <label>
-                      <button className='bg-red-300 p-2' onClick={() => changKey('Reducekey')}>
-                        -
-                      </button>
-                    </label>
-                    <label>{text?.key}</label>
-                    <label>
-                      <button className='bg-red-300 p-2' onClick={() => changKey('Addkey')}>
-                        +
-                      </button>
-                    </label>
-                  </div>
-                </div>
-
-                <label />
-              </div>
-            </header>
-
-            <content className='bg-gray-100 h-4/6 flex flex-col items-center justify-center p-2 duration-500'>
-              <div className='bg-red-300 w-2/3 p-2 overflow-y-auto h-full'>
-                {loader ? (
-                  <p>Loading Image...</p>
-                ) : (
-                    <div className='grid gap-4'>
-                        {/* <p className="cv-th">{parseChordsInText(text.music)}</p> */}
-                        <p>{text.music}</p>
-                        <p class="cv-th">* ไม่อยาก <span id="c_chord">G</span>ให้คุณมีแฟน ไม่ได้อยาก<span id="c_chord">Gm</span>ให้คุณมีใคร </p>
-                        <p class="cv-th">คนเดียวนี้นั้<span id="c_chord">F#m</span>นไว้ใจยาก มีแต่ผม<span id="c_chord">B7</span>ที่ไว้ใจได้ </p>
-                        <p class="cv-th">ไม่อยาก<span id="c_chord">G</span>ให้คุณมีแฟน ไม่ได้อยาก<span id="c_chord">Gm</span>ให้คุณมีใคร </p>
-                        <p class="cv-th">อยากให้มีแ<span id="c_chord">F#m</span>ค่ผมคนเดียว ได้ไหม<span id="c_chord">B7</span> </p>
-                        <hr/>
-                        <p class="cv-th">* ไม่อยาก <span id="c_chord">G</span>ให้คุณมีแฟน ไม่ได้อยาก<span id="c_chord">Gm</span>ให้คุณมีใคร </p>
-                        <p class="cv-th">คนเดียวนี้นั้<span id="c_chord">F#m</span>นไว้ใจยาก มีแต่ผม<span id="c_chord">B7</span>ที่ไว้ใจได้ </p>
-                        <p class="cv-th">ไม่อยาก<span id="c_chord">G</span>ให้คุณมีแฟน ไม่ได้อยาก<span id="c_chord">Gm</span>ให้คุณมีใคร </p>
-                        <p class="cv-th">อยากให้มีแ<span id="c_chord">F#m</span>ค่ผมคนเดียว ได้ไหม<span id="c_chord">B7</span> </p>
-                    </div>
-                )}
-              </div>
-            </content>
-
-            <footer className='h-1/6 flex items-center justify-center'>
-              <div className='w-2/3 h-full'>
-                <TableChords chords={text.chord} />
-              </div>
-            </footer>
-          </>
-        )
-      ) : (
-        <p>error</p>
-      )}
-    </main>
+    <div className='h-screen flex justify-center items-center'>
+      <div className="w-1/2 h-1/2 bg-red-500 p-2">
+        <button 
+        className='bg-white p-2 rounded-lg'
+        onClick={() => setRecord(!record)}>
+          {record ? 'หยุด ' : 'เริ่ม '} Turnner
+        </button>
+        <br />
+        <label className='text-5xl'>Frequency: {frequency}</label>
+        <br />
+        <label className='text-5xl'>Pitch: {pitch}</label>
+      </div>
+    </div>
   );
-}
+};
+
+export default Test;

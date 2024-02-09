@@ -63,24 +63,6 @@ const Consoler = ({ nameArtist, keyMusic, swite, slide }) => {
         </button> 
       </div>
 
-      {/* <div id="mode-music" className="bg-green-300 grid grid-rows-5 p-1 items-center w-full">
-        <button className="bg-blue-300 p-2 h-full" onClick={() => swite(true)}>
-          DoCHORD
-        </button>
-        <button className="bg-blue-300 p-2" onClick={() => {console.log('Slide Start')}}>
-          Slide
-        </button> 
-        <button className="bg-blue-300 p-2" onClick={() => swite(true)}>
-          DoCHORD
-        </button>
-        <button className="bg-blue-300 p-2" onClick={() => swite(true)}>
-          DoCHORD
-        </button>
-        <button className="bg-blue-300 p-2" onClick={() => swite(true)}>
-          DoCHORD
-        </button>
-      </div> */}
-
     </div>
   );
 };

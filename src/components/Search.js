@@ -13,7 +13,7 @@ export default function Search({openMuduls, setOpenMuduls, user}) {
     console.log('searching...' +  keyword)
     setLoad(true);
     try {
-      const response = await axios.get(`http://localhost:3000/api/SearchMusic?name=${keyword}`);
+      const response = await axios.get(`https://easychord.vercel.app/api/SearchMusic?name=${keyword}`);
       setData(response.data);
       setLoad(false);
       console.log(response.data);
@@ -63,7 +63,7 @@ export default function Search({openMuduls, setOpenMuduls, user}) {
                                     console.log(url)
                                     if (user) {
                                         router.push({
-                                            pathname: '/Test',
+                                            pathname: '/ChordPage',
                                             query: { id: format },
                                         })
                                     } else {
