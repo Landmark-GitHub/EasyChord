@@ -31,7 +31,7 @@ export default function Home() {
 
         </div>
         <Search/>
-        <div className=''></div>
+        <div className=''>sdasds</div>
       </footer>
     </main>
   );
