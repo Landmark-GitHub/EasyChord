@@ -45,7 +45,7 @@ export default function Search({openMuduls, setOpenMuduls, user}) {
                         onClick={axiosSearch}
                         //onClick={() => console.log(data)}
                     >
-                        Search
+                        SearchJAAA
                     </button>
                 </label>
             </div>
