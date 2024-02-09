@@ -32,6 +32,7 @@ export default function Home() {
         </div>
         <Search/>
         <div className=''>sdasds</div>
+        <div>sdsadsa</div>
       </footer>
     </main>
   );
