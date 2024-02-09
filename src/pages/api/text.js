@@ -1,43 +1,110 @@
 const puppeteer = require('puppeteer');
 
-export default async function handler(req, res) {
+async function loaddata(id, page) {
 
-  const { id } = req.query;
+  try {
 
-  if (req.method === 'GET'){
-    try {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
-      await page.goto(`https://www.dochord.com/${id}/`); // เพิ่มการตั้งค่า timeout
-      
-      // ดำเนินการอื่น ๆ กับ Puppeteer
-      //#post-132815 > section:nth-child(1) > div > div > div.single-cover-header
-      //#post-132815 > section:nth-child(1) > div > div > div.single-cover-header > div.single-cover-header-info > div > h1
-      //#post-132815 > section:nth-child(4) > div.single-key > div.single-key__select > div
-      //#post-99338 > section:nth-child(1) > div > div > div.single-cover-header > div.single-cover-header-info > div > h1
-      const elementName = await page.waitForSelector(`#post-${id} > section:nth-child(1) > div > div > div.single-cover-header > div.single-cover-header-info > div > h1`);
-      const textName = await page.evaluate(elementName => elementName.textContent, elementName);
+    const nameSelector = `#post-${id} > section:nth-child(1) > div > div > div.single-cover-header > div.single-cover-header-info > div > h1`;
+    const keySelector = `#post-${id} > section:nth-child(4) > div.single-key > div.single-key__select > div`;
+    const chordSelector = `#post-${id} > section:nth-child(2) > div.archive-desc > p`;
+    const capoSelector = `#post-${id} > section:nth-child(4) > div.single-key > div.single-key__desc`
+    const mucicSelector = `#post-${id} > section:nth-child(5) > div > div`
 
-      const elementKey = await page.waitForSelector(`#post-${id} > section:nth-child(4) > div.single-key > div.single-key__select > div`)
-      const textKey = await page.evaluate(elementKey => elementKey.textContent, elementKey);
+    const [nameElement, keyElement, chordElement, capoElement, mucicElement] = await Promise.all([
+      page.waitForSelector(nameSelector),
+      page.waitForSelector(keySelector),
+      page.waitForSelector(chordSelector),
+      page.waitForSelector(capoSelector),
+      page.waitForSelector(mucicSelector)
+    ]);
 
-      //#post-132815 > section:nth-child(2) > div.archive-desc > p
-      const elementChord = await page.waitForSelector(`#post-${id} > section:nth-child(2) > div.archive-desc > p`)
-      const temp = (await page.evaluate(elementChord => elementChord.textContent, elementChord));
-      const textChord = temp.split(", ").map((i) => i.replace("คอร์ด ", ""))
+    const name = await page.evaluate(element => element.textContent, nameElement);
+    const key = await page.evaluate(element => element.textContent, keyElement);
+    const chordText = await page.evaluate(element => element.textContent, chordElement);
+    const capo = await page.evaluate(element => element.textContent, capoElement);
+    const music = await page.evaluate(element => element.textContent, mucicElement);
+    
+    const lines = music.split('\n').map(line => line.trim());
+    const chord = chordText.split(', ').map(i => i.replace('คอร์ด ', ''));
 
-      const data = {
-        name: textName ,
-        key: textKey,
-        chord: textChord,
-    }
+    // await browser.close();
 
-      await browser.close();
-      res.status(200).json(data);
-    } catch (error) {
-      console.error('Puppeteer error:', error);
-      res.status(500).json({ message: 'Error performing Puppeteer operation' });
-    }
+    return {
+      name,
+      key,
+      chord,
+      capo,
+      lines
+    };
+
+  } catch (error) {
+    console.error('Puppeteer error:', error);
+    throw new Error('Error performing Puppeteer operation');
   }
+}
 
+async function addkey(id, page) {
+  let selector = `#post-${id} > section:nth-child(4) > div.single-key > div.single-key__select > a.single-key__select-plus`
+  const [response] = await Promise.all([
+    page.click(selector),
+  ]);
+}
+
+async function reducekey(id, page) {
+  let selector = `#post-${id} > section:nth-child(4) > div.single-key > div.single-key__select > a.single-key__select-minus`
+  
+  const [response] = await Promise.all([
+    // page.waitForNavigation(waitOptions),
+    page.click(selector),
+  ]);
+}
+
+export default async function handler(req, res) {
+  const { id, key, count } = req.query;
+
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.goto(`https://www.dochord.com/${id}/`, { waitUntil: 'networkidle2', timeout: 0 });
+
+  let data;
+
+  if (req.method === 'GET') {
+
+    if (!id) {
+      res.status(200).json("NOT ID");
+    } 
+    else if (id && !key && !count) {
+      try {
+        data = await loaddata(id, page,{timeout:30000});
+        res.status(200).json(data);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+
+    else if (id && key && count) {
+      try {
+        if (count != 0) {
+          if (key === 'Addkey') {
+            for (var i = 0 ; i < count; i++) {
+              await addkey(id, page); 
+            }
+            data = await loaddata(id, page, { timeout: 30000 });
+            res.status(200).json(data);
+          } else if (key === 'Reducekey') {
+            for (var i = 0; i < count; i++) {
+              await reducekey(id, page);
+            }
+            data = await loaddata(id, page, { timeout: 30000 });
+            res.status(200).json(data);
+          }
+        } else {
+          data = await loaddata(id, page, { timeout: 30000 });
+          res.status(200).json(data);
+        }
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    }
+  } 
 }

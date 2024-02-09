@@ -4,7 +4,7 @@ import axios from 'axios';
 import TableChords from '@/components/TableChords';
 import Consoler from '@/components/Consoler';
 import { PacmanLoader } from 'react-spinners';
-import screenshot from '../pages/screenshot.png';
+import screenshot from '../image/screenshot.png';
 
 const ChordPage = () => {
   const [loader, setLoader] = useState(false);
