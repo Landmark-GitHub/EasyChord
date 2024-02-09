@@ -10,10 +10,11 @@ export default function Search({openMuduls, setOpenMuduls, user}) {
   const [load, setLoad] = useState(false);
 
   async function axiosSearch() {
-    console.log('searching...' +  keyword)
+    console.log('searching...' +  keyword + 'sdsd')
+    console.log(`http://localhost:3000/api/SearchMusic?name=${keyword}`);
     setLoad(true);
     try {
-      const response = await axios.get(`https://easychord.vercel.app/api/SearchMusic?name=${keyword}`);
+      const response = await axios.get(`http://localhost:3000/api/SearchMusic?name=${keyword}`);
       setData(response.data);
       setLoad(false);
       console.log(response.data);
@@ -45,7 +46,7 @@ export default function Search({openMuduls, setOpenMuduls, user}) {
                         onClick={axiosSearch}
                         //onClick={() => console.log(data)}
                     >
-                        SearchJAAA
+                        Search
                     </button>
                 </label>
             </div>
