@@ -117,12 +117,6 @@ export default function Home() {
           </div>
           }
         </div>
-<<<<<<< HEAD
-        <Search/>
-        <div className=''>sdasds</div>
-        <div>sdsadsa</div>
-      </footer>
-=======
 
         <Search
           openMuduls={openMuduls}
@@ -396,8 +390,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
->>>>>>> main
     </main>
   );
 }
