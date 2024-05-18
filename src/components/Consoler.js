@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Consoler = ({ nameArtist, keyMusic, swite, slide }) => {
+const Consoler = ({ nameArtist, keyMusic, swite, plusKey, minusKey }) => {
 
 
   const scrollDown = () => {
@@ -38,9 +38,9 @@ const Consoler = ({ nameArtist, keyMusic, swite, slide }) => {
         </div>
 
         <div className='h-1/2 flex items-center justify-between px-24'>
-            <button className="bg-blue-500 p-2">Back</button>
+            <button className="bg-blue-500 p-2" onClick={() => minusKey()}>Back</button>
             ||
-            <button className="bg-blue-500 p-2">Next</button>
+            <button className="bg-blue-500 p-2" onClick={() => plusKey()}>Next</button>
         </div>
       </div>
 
